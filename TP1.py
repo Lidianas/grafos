@@ -1,6 +1,8 @@
 import numpy as np
 
-nameFile = "exemplo.txt"
+inputFile = "exemplo.txt"
+outputFile = "graphInfos.txt"
+
 global isMatrixType
 global n
 global m
@@ -84,7 +86,6 @@ def readGraph(i, file):
         return matrixGraph(file)
     else:
         return listGraph(file)
-
 
 def matrixGraph(file):
     with open(file, 'r') as f:
@@ -188,5 +189,13 @@ def DFS_List(s):
                 neighbor = neighbor.next
         prev = v
 
-readGraph(1, nameFile)
-DFS_List(1)
+def graphInfo(file):
+    with open(file, 'w') as f:
+        global n
+        global m
+        f.write(n)
+        f.write(m)
+
+readGraph(1, inputFile)
+graphInfo(outputFile)
+#DFS_List(1)
