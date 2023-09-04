@@ -7,7 +7,7 @@ class MatrixGraph():
     def __init__(self):
         self.n = 0
         self.m = 0
-        self.graph = 0
+        self.myGraph = 0
 
     def readGraph(self, file):
         with open(file, 'r') as f:

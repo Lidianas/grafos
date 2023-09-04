@@ -8,7 +8,7 @@ class ListGraph():
     def __init__(self):
         self.n = 0
         self.m = 0
-        self.graph = 0
+        self.myGraph = 0
 
     def readGraph(self, file):
         with open(file, 'r') as f:
@@ -36,8 +36,6 @@ class ListGraph():
                     print("pai de", neighbor.data, v)
                     bfsQueue.enqueue(neighbor.data)
                 neighbor = neighbor.next
-
-
 
     def dfs(self, s):
         dfsVector = np.zeros(self.n, dtype=object)
