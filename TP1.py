@@ -168,8 +168,7 @@ def DFS_Matrix(s):
             i = 1
             for isNeighbor in myGraph[v - 1]:
                 if isNeighbor == 1:
-                    w = i
-                    dfsStack.push(w)
+                    dfsStack.push(i)
                 i += 1
         prev = v
 
