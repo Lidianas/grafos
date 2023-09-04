@@ -11,8 +11,11 @@ class main():
     mg.readGraph(inputFile)
     lg.readGraph(inputFile)
 
-    mg.bfs()
+    lg_tree_v4 = lg.bfs(4)
+    print(lg_tree_v4)
 
+    d13 = lg.dist(1,3)
+    print(d13)
 
 
     

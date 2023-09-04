@@ -24,6 +24,7 @@ class ListGraph():
 
     def bfs(self, s):
         bfsVector = np.zeros(self.n, dtype=object)
+        bfsTree = np.zeros(self.n, dtype=object)
         bfsQueue = queue.Queue()
         bfsVector[s - 1] = 1
         bfsQueue.enqueue(s)
@@ -33,9 +34,11 @@ class ListGraph():
             while neighbor is not None:
                 if bfsVector[neighbor.data - 1] == 0:
                     bfsVector[neighbor.data - 1] = 1
+                    bfsTree[neighbor.data-1] = v
                     print("pai de", neighbor.data, v)
                     bfsQueue.enqueue(neighbor.data)
                 neighbor = neighbor.next
+        return bfsTree
 
     def dfs(self, s):
         dfsVector = np.zeros(self.n, dtype=object)
@@ -58,5 +61,15 @@ class ListGraph():
             f.write(str(self.n)+'\n')
             f.write(str(self.m))
 
-    def dist(u,v):
-        pass
+    def dist(self, u,v):
+        tree = self.bfs(u)
+        if tree[v] != 0:
+            c = 1
+            dad = tree[v-1]
+            while c < self.n:
+                if u == dad:
+                    return c
+                else: 
+                    dad = tree[dad-1]
+                    c+=1
+        return "u and v are equal or there is no path between them"
