@@ -38,7 +38,7 @@ class ListGraph():
                     #print("pai de", neighbor.data, v)
                     bfsQueue.enqueue(neighbor.data)
                 neighbor = neighbor.next
-        return bfsTree
+        return bfsTree, bfsVector
 
     def dfs(self, s):
         dfsVector = np.zeros(self.n, dtype=object)
@@ -91,7 +91,7 @@ class ListGraph():
             f.write("Mediana gos graus: " + str(medianDegree) + '\n')
 
     def dist(self, u, v):
-        tree = self.bfs(u)
+        tree = self.bfs(u)[0]
         if tree[v-1] != 0:
             c = 1
             dad = tree[v-1]

@@ -37,7 +37,7 @@ class MatrixGraph():
                         #print("pai de", i, v)
                         bfsQueue.enqueue(i)
                 i += 1
-        return bfsTree
+        return bfsTree, bfsVector
 
     def dfs(self, s):
         dfsVector = np.zeros(self.n, dtype=object)
@@ -82,7 +82,7 @@ class MatrixGraph():
             f.write("Mediana gos graus: " + str(medianDegree) + '\n')
 
     def dist(self, u, v):
-        tree = self.bfs(u)
+        tree = self.bfs(u)[0]
         if tree[v-1] != 0:
             c = 1
             dad = tree[v-1]
@@ -111,3 +111,19 @@ class MatrixGraph():
             biggerDistancePerVertice.append(actual_dist)
 
         return max(biggerDistancePerVertice)
+
+    def connectedComponents(self, v):
+        tree, visitedVertices = self.bfs(v)
+        tmp = sum(visitedVertices)
+        ccClass = np.zeros(self.n, dtype=object)
+        tmp_outClass = []
+        classValue = 1
+        if tmp < self.n: 
+            for el in range(len(visitedVertices)):
+                if el == 0:
+                    tmp_outClass.append(el + 1)
+                else:
+                    ccClass[el] = classValue
+        else:
+            "there is no connected components"
+            return tree
