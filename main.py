@@ -12,6 +12,7 @@ class main():
     lg.readGraph(inputFile)
 
     print(mg.diameter())
+    print(lg.diameter())
 
     mg.graphInfo("graphInfos_matrixGraph.txt")
     lg.graphInfo("graphInfos_listGraph.txt")

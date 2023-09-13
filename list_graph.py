@@ -104,3 +104,19 @@ class ListGraph():
             return "there is no path between them \n"
         else: 
             return "u and v are equal \n"
+
+    def diameter(self):
+        biggerDistancePerVertice = []
+        actual_dist = 0
+        tmp_dist = 0
+
+        for u in range(1, self.n+1):
+            for v in range(1, self.n+1):
+                if u != v: 
+                    tmp_dist = self.dist(u, v)
+                    if type(tmp_dist) == int:
+                        if tmp_dist > actual_dist: 
+                            actual_dist = tmp_dist
+            biggerDistancePerVertice.append(actual_dist)
+
+        return max(biggerDistancePerVertice)

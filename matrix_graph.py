@@ -68,9 +68,9 @@ class MatrixGraph():
         maxDegree = max(arrDegree)
         meanDegree = sum(arrDegree)/len(arrDegree)
         
-        arrDegreeOndered = sorted(arrDegree)
-        if len(arrDegree)%2 != 0: medianDegree = arrDegreeOndered[int((len(arrDegreeOndered)+1)/2)]
-        else: medianDegree = (arrDegreeOndered[(len(arrDegreeOndered))/2] + arrDegreeOndered[(len(arrDegreeOndered)+1)/2])/2
+        arrDegreeOrdered = sorted(arrDegree)
+        if len(arrDegree)%2 != 0: medianDegree = arrDegreeOrdered[int((len(arrDegreeOrdered)+1)/2)]
+        else: medianDegree = (arrDegreeOrdered[(len(arrDegreeOrdered))/2] + arrDegreeOrdered[(len(arrDegreeOrdered)+1)/2])/2
 
 
         with open(file, 'w') as f:
@@ -105,8 +105,9 @@ class MatrixGraph():
             for v in range(1, self.n+1):
                 if u != v: 
                     tmp_dist = self.dist(u, v)
-                    if tmp_dist > actual_dist: 
-                        actual_dist = tmp_dist
+                    if type(tmp_dist) == int:
+                        if tmp_dist > actual_dist: 
+                            actual_dist = tmp_dist
             biggerDistancePerVertice.append(actual_dist)
 
         return max(biggerDistancePerVertice)
