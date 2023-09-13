@@ -34,8 +34,8 @@ class ListGraph():
             while neighbor is not None:
                 if bfsVector[neighbor.data - 1] == 0:
                     bfsVector[neighbor.data - 1] = 1
-                    bfsTree[neighbor.data-1] = v
-                    print("pai de", neighbor.data, v)
+                    bfsTree[neighbor.data - 1] = v
+                    #print("pai de", neighbor.data, v)
                     bfsQueue.enqueue(neighbor.data)
                 neighbor = neighbor.next
         return bfsTree
@@ -49,19 +49,56 @@ class ListGraph():
             v = dfsStack.pop()
             if dfsVector[v - 1] == 0:
                 dfsVector[v - 1] = 1
-                print("pai de", v, prev)
+                #print("pai de", v, prev)
                 neighbor = self.myGraph[v - 1].head
                 while neighbor is not None:
                     dfsStack.push(neighbor.data)
                     neighbor = neighbor.next
             prev = v
 
-    def graphInfo(self, file):
-        with open(file, 'w') as f:
-            f.write(str(self.n)+'\n')
-            f.write(str(self.m))
+    def getIncidenceByVertice(self, v):
+        neighbor = self.myGraph[v].head
+        print(neighbor)
+        arrIncidence = []
+        while neighbor is not None:
+            print("entrei no while")
+            arrIncidence.append(neighbor.next)
+            neighbor = neighbor.next
 
-    def dist(self, u,v):
+        return arrIncidence
+
+    def graphInfo(self, file):
+
+
+        print(len(self.myGraph))
+
+        print(self.myGraph[0])
+        arrDegree = []
+        if len(self.myGraph) != 0:
+            for incident in range(len(self.myGraph)):
+                tmp_incidents = self.getIncidenceByVertice(incident)
+                print(tmp_incidents)
+                arrDegree.append(len(tmp_incidents))
+        print(arrDegree)
+
+        minDegree = min(arrDegree)
+        maxDegree = max(arrDegree)
+        meanDegree = sum(arrDegree)/len(arrDegree)
+        
+        arrDegreeOndered = sorted(arrDegree)
+        if len(arrDegree)%2 != 0: medianDegree = arrDegreeOndered[int((len(arrDegreeOndered)+1)/2)]
+        else: medianDegree = (arrDegreeOndered[(len(arrDegreeOndered))/2] + arrDegreeOndered[(len(arrDegreeOndered)+1)/2])/2
+
+
+        with open(file, 'w') as f:
+            f.write("Vértices: " + str(self.n) + '\n')
+            f.write("Arestas: " + str(self.m) + '\n')
+            f.write("Grau mínimo: " + str(minDegree) + '\n')
+            f.write("Grau máximo: " + str(maxDegree) + '\n')
+            f.write("Média dos graus: " + str(meanDegree) + '\n')
+            f.write("Mediana gos graus: " + str(medianDegree) + '\n')
+
+    def dist(self, u, v):
         tree = self.bfs(u)
         if tree[v] != 0:
             c = 1

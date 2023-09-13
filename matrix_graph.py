@@ -33,7 +33,7 @@ class MatrixGraph():
                     if bfsVector[i - 1] == 0:
                         bfsVector[i - 1] = 1
                         bfsTree[i-1] = v
-                        print("pai de", i, v)
+                        #print("pai de", i, v)
                         bfsQueue.enqueue(i)
                 i += 1
         return bfsTree
@@ -47,7 +47,7 @@ class MatrixGraph():
             v = dfsStack.pop()
             if dfsVector[v - 1] == 0:
                 dfsVector[v - 1] = 1
-                print("pai de", v, prev)
+                #print("pai de", v, prev)
                 i = 1
                 for isNeighbor in self.myGraph[v - 1]:
                     if isNeighbor == 1:
@@ -57,9 +57,28 @@ class MatrixGraph():
             prev = v
 
     def graphInfo(self, file):
+
+        arrDegree = []
+        if len(self.myGraph) != 0:
+            for incident in self.myGraph:
+                arrDegree.append(np.count_nonzero(incident == 1))
+
+        minDegree = min(arrDegree)
+        maxDegree = max(arrDegree)
+        meanDegree = sum(arrDegree)/len(arrDegree)
+        
+        arrDegreeOndered = sorted(arrDegree)
+        if len(arrDegree)%2 != 0: medianDegree = arrDegreeOndered[int((len(arrDegreeOndered)+1)/2)]
+        else: medianDegree = (arrDegreeOndered[(len(arrDegreeOndered))/2] + arrDegreeOndered[(len(arrDegreeOndered)+1)/2])/2
+
+
         with open(file, 'w') as f:
-            f.write(str(self.n)+'\n')
-            f.write(str(self.m))
+            f.write("Vértices: " + str(self.n) + '\n')
+            f.write("Arestas: " + str(self.m) + '\n')
+            f.write("Grau mínimo: " + str(minDegree) + '\n')
+            f.write("Grau máximo: " + str(maxDegree) + '\n')
+            f.write("Média dos graus: " + str(meanDegree) + '\n')
+            f.write("Mediana gos graus: " + str(medianDegree) + '\n')
 
     def dist(self, u, v):
         tree = self.bfs(u)
