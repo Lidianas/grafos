@@ -69,17 +69,11 @@ class ListGraph():
 
     def graphInfo(self, file):
 
-
-        print(len(self.myGraph))
-
-        print(self.myGraph[0])
         arrDegree = []
         if len(self.myGraph) != 0:
             for incident in range(len(self.myGraph)):
                 tmp_incidents = self.getIncidenceByVertice(incident)
-                print(tmp_incidents)
                 arrDegree.append(len(tmp_incidents))
-        print(arrDegree)
 
         minDegree = min(arrDegree)
         maxDegree = max(arrDegree)
