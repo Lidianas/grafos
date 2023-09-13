@@ -58,10 +58,8 @@ class ListGraph():
 
     def getIncidenceByVertice(self, v):
         neighbor = self.myGraph[v].head
-        print(neighbor)
         arrIncidence = []
         while neighbor is not None:
-            print("entrei no while")
             arrIncidence.append(neighbor.next)
             neighbor = neighbor.next
 
@@ -78,7 +76,7 @@ class ListGraph():
         minDegree = min(arrDegree)
         maxDegree = max(arrDegree)
         meanDegree = sum(arrDegree)/len(arrDegree)
-        
+
         arrDegreeOndered = sorted(arrDegree)
         if len(arrDegree)%2 != 0: medianDegree = arrDegreeOndered[int((len(arrDegreeOndered)+1)/2)]
         else: medianDegree = (arrDegreeOndered[(len(arrDegreeOndered))/2] + arrDegreeOndered[(len(arrDegreeOndered)+1)/2])/2
@@ -94,7 +92,7 @@ class ListGraph():
 
     def dist(self, u, v):
         tree = self.bfs(u)
-        if tree[v] != 0:
+        if tree[v-1] != 0:
             c = 1
             dad = tree[v-1]
             while c < self.n:
@@ -103,4 +101,6 @@ class ListGraph():
                 else: 
                     dad = tree[dad-1]
                     c+=1
-        return "u and v are equal or there is no path between them"
+            return "there is no path between them \n"
+        else: 
+            return "u and v are equal \n"

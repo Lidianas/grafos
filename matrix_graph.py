@@ -1,3 +1,4 @@
+from cmath import nan
 import numpy as np
 import queue
 import stack
@@ -82,7 +83,7 @@ class MatrixGraph():
 
     def dist(self, u, v):
         tree = self.bfs(u)
-        if tree[v] != 0:
+        if tree[v-1] != 0:
             c = 1
             dad = tree[v-1]
             while c < self.n:
@@ -91,5 +92,21 @@ class MatrixGraph():
                 else: 
                     dad = tree[dad-1]
                     c+=1
-        return "u and v are equal or there is no path between them"
+            return "there is no path between them \n"
+        else:
+             "u and v are equal \n"
     
+    def diameter(self):
+        biggerDistancePerVertice = []
+        actual_dist = 0
+        tmp_dist = 0
+
+        for u in range(1, self.n+1):
+            for v in range(1, self.n+1):
+                if u != v: 
+                    tmp_dist = self.dist(u, v)
+                    if tmp_dist > actual_dist: 
+                        actual_dist = tmp_dist
+            biggerDistancePerVertice.append(actual_dist)
+
+        return max(biggerDistancePerVertice)
