@@ -120,15 +120,16 @@ class MatrixGraph():
         cc = 1
         v = 1
         self.ccClass = np.zeros(self.n)
+        missingVertice = 0
         while tmp_cc:
-            missingVertice = 0
+            
             tmp_elCC = []
             tree, visitedVertices = self.bfs(v)
             for u in range(len(visitedVertices)):
                 if visitedVertices[u] == 1 and self.ccClass[u] == 0:
                     self.ccClass[u] = cc
                     tmp_elCC.append(u)
-                elif visitedVertices[u] == 0 and self.ccClass[u] ==  0 and missingVertice == 0:
+                elif visitedVertices[u] == 0 and self.ccClass[u] ==  0:
                     missingVertice = u
                 else:
                     tmp_cc = False
