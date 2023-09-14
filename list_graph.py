@@ -84,10 +84,13 @@ class ListGraph():
         maxDegree = max(arrDegree)
         meanDegree = sum(arrDegree)/len(arrDegree)
 
-        arrDegreeOndered = sorted(arrDegree)
-        if len(arrDegree)%2 != 0: medianDegree = arrDegreeOndered[int((len(arrDegreeOndered)+1)/2)]
-        else: medianDegree = (arrDegreeOndered[(len(arrDegreeOndered))/2] + arrDegreeOndered[(len(arrDegreeOndered)+1)/2])/2
-
+        arrDegreeOrdered = sorted(arrDegree)
+        if len(arrDegree) % 2 != 0:
+            medianDegree = arrDegreeOrdered[int(len(arrDegreeOrdered) // 2)]
+        else:
+            middle1 = arrDegreeOrdered[int(len(arrDegreeOrdered) // 2)]
+            middle2 = arrDegreeOrdered[int(len(arrDegreeOrdered) // 2 - 1)]
+            medianDegree = (middle1 + middle2) / 2
 
         with open(file, 'w') as f:
             f.write("Vértices: " + str(self.n) + '\n')

@@ -12,18 +12,18 @@ class main():
     mg.readGraph(inputFile)
     lg.readGraph(inputFile)
 
-    mg.dfs(1)
-    mg.bfs(1)
-    lg.dfs(1)
-    lg.bfs(1)
-    """
+    mg.dfs(4)
+    mg.bfs(4)
+    lg.dfs(4)
+    lg.bfs(4)
+
     print(mg.diameter())
     print(lg.diameter())
 
     print(mg.connectedComponents())
 
     mg.graphInfo("graphInfos_matrixGraph.txt")
-    lg.graphInfo("graphInfos_listGraph.txt")"""
+    lg.graphInfo("graphInfos_listGraph.txt")
 
 
     

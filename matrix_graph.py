@@ -79,9 +79,12 @@ class MatrixGraph():
         meanDegree = sum(arrDegree)/len(arrDegree)
         
         arrDegreeOrdered = sorted(arrDegree)
-        if len(arrDegree)%2 != 0: medianDegree = arrDegreeOrdered[int((len(arrDegreeOrdered)+1)/2)]
-        else: medianDegree = (arrDegreeOrdered[(len(arrDegreeOrdered))/2] + arrDegreeOrdered[(len(arrDegreeOrdered)+1)/2])/2
-
+        if len(arrDegree) % 2 != 0:
+            medianDegree = arrDegreeOrdered[int(len(arrDegreeOrdered) // 2)]
+        else:
+            middle1 = arrDegreeOrdered[int(len(arrDegreeOrdered) // 2)]
+            middle2 = arrDegreeOrdered[int(len(arrDegreeOrdered) // 2 - 1)]
+            medianDegree = (middle1 + middle2) / 2
 
         with open(file, 'w') as f:
             f.write("Vértices: " + str(self.n) + '\n')
