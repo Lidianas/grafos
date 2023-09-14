@@ -1,6 +1,6 @@
 import numpy as np
 import linked_list
-import queue
+import queue_implementation
 import stack
 
 class ListGraph():
@@ -25,19 +25,23 @@ class ListGraph():
     def bfs(self, s):
         bfsVector = np.zeros(self.n, dtype=object)
         bfsTree = np.zeros(self.n, dtype=object)
-        bfsQueue = queue.Queue()
+        bfsQueue = queue_implementation.Queue()
         bfsVector[s - 1] = 1
         bfsQueue.enqueue(s)
-        while not bfsQueue.isEmpty():
-            v = bfsQueue.dequeue()
-            neighbor = self.myGraph[v - 1].head
-            while neighbor is not None:
-                if bfsVector[neighbor.data - 1] == 0:
-                    bfsVector[neighbor.data - 1] = 1
-                    bfsTree[neighbor.data - 1] = v
-                    #print("pai de", neighbor.data, v)
-                    bfsQueue.enqueue(neighbor.data)
-                neighbor = neighbor.next
+        levels = {s: 0}
+        with open("arvore_busca_bfs_list.txt", "w") as file:
+            file.write(f"Vértice {s}: Pai = {s}, Nível = {0}\n")
+            while not bfsQueue.isEmpty():
+                v = bfsQueue.dequeue()
+                neighbor = self.myGraph[v - 1].head
+                while neighbor is not None:
+                    if bfsVector[neighbor.data - 1] == 0:
+                        bfsVector[neighbor.data - 1] = 1
+                        bfsTree[neighbor.data - 1] = v
+                        levels[neighbor.data] = levels[v] + 1 if v in levels else 0
+                        file.write(f"Vértice {neighbor.data}: Pai = {v}, Nível = {levels[neighbor.data]}\n")
+                        bfsQueue.enqueue(neighbor.data)
+                    neighbor = neighbor.next
         return bfsTree, bfsVector
 
     def dfs(self, s):
@@ -45,16 +49,19 @@ class ListGraph():
         dfsStack = stack.Stack()
         dfsStack.push(s)
         prev = s
-        while not dfsStack.isEmpty():
-            v = dfsStack.pop()
-            if dfsVector[v - 1] == 0:
-                dfsVector[v - 1] = 1
-                #print("pai de", v, prev)
-                neighbor = self.myGraph[v - 1].head
-                while neighbor is not None:
-                    dfsStack.push(neighbor.data)
-                    neighbor = neighbor.next
-            prev = v
+        levels = {}
+        with open("arvore_busca_dfs_list.txt", "w") as file:
+            while not dfsStack.isEmpty():
+                v = dfsStack.pop()
+                if dfsVector[v - 1] == 0:
+                    dfsVector[v - 1] = 1
+                    levels[v] = levels[prev] + 1 if prev in levels else 0
+                    file.write(f"Vértice {v}: Pai = {prev}, Nível = {levels[v]}\n")
+                    neighbor = self.myGraph[v - 1].head
+                    while neighbor is not None:
+                        dfsStack.push(neighbor.data)
+                        neighbor = neighbor.next
+                prev = v
 
     def getIncidenceByVertice(self, v):
         neighbor = self.myGraph[v].head

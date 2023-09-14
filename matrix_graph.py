@@ -1,6 +1,6 @@
 from cmath import nan
 import numpy as np
-import queue
+import queue_implementation
 import stack
 
 class MatrixGraph():
@@ -25,20 +25,25 @@ class MatrixGraph():
     def bfs(self, s):
         bfsVector = np.zeros(self.n, dtype=object)
         bfsTree = np.zeros(self.n, dtype=object)
-        bfsQueue = queue.Queue()
+        bfsQueue = queue_implementation.Queue()
         bfsVector[s - 1] = 1
         bfsQueue.enqueue(s)
-        while not bfsQueue.isEmpty():
-            v = bfsQueue.dequeue()
-            i = 1
-            for isNeighbor in self.myGraph[v - 1]:
-                if isNeighbor == 1:
-                    if bfsVector[i - 1] == 0:
-                        bfsVector[i - 1] = 1
-                        bfsTree[i-1] = v
-                        #print("pai de", i, v)
-                        bfsQueue.enqueue(i)
-                i += 1
+        levels = {s: 0}
+        with open("arvore_busca_bfs_matrix.txt", "w") as file:
+            file.write(f"Vértice {s}: Pai = {s}, Nível = {0}\n")
+            while not bfsQueue.isEmpty():
+                v = bfsQueue.dequeue()
+                i = 1
+                for isNeighbor in self.myGraph[v - 1]:
+                    if isNeighbor == 1:
+                        if bfsVector[i - 1] == 0:
+                            bfsVector[i - 1] = 1
+                            bfsTree[i-1] = v
+                            levels[i] = levels[v] + 1 if v in levels else 0
+                            file.write(f"Vértice {i}: Pai = {v}, Nível = {levels[i]}\n")
+
+                            bfsQueue.enqueue(i)
+                    i += 1
         return bfsTree, bfsVector
 
     def dfs(self, s):
@@ -46,18 +51,21 @@ class MatrixGraph():
         dfsStack = stack.Stack()
         dfsStack.push(s)
         prev = s
-        while not dfsStack.isEmpty():
-            v = dfsStack.pop()
-            if dfsVector[v - 1] == 0:
-                dfsVector[v - 1] = 1
-                #print("pai de", v, prev)
-                i = 1
-                for isNeighbor in self.myGraph[v - 1]:
-                    if isNeighbor == 1:
-                        w = i
-                        dfsStack.push(w)
-                    i += 1
-            prev = v
+        levels = {}
+        with open("arvore_busca_dfs_matrix.txt", "w") as file:
+            while not dfsStack.isEmpty():
+                v = dfsStack.pop()
+                if dfsVector[v - 1] == 0:
+                    dfsVector[v - 1] = 1
+                    levels[v] = levels[prev] + 1 if prev in levels else 0
+                    file.write(f"Vértice {v}: Pai = {prev}, Nível = {levels[v]}\n")
+                    i = 1
+                    for isNeighbor in self.myGraph[v - 1]:
+                        if isNeighbor == 1:
+                            w = i
+                            dfsStack.push(w)
+                        i += 1
+                prev = v
 
     def graphInfo(self, file):
 
