@@ -9,6 +9,8 @@ class MatrixGraph():
         self.n = 0
         self.m = 0
         self.myGraph = 0
+        self.ccClass = []
+        self.cc = []
 
     def readGraph(self, file):
         with open(file, 'r') as f:
@@ -112,18 +114,27 @@ class MatrixGraph():
 
         return max(biggerDistancePerVertice)
 
-    def connectedComponents(self, v):
-        tree, visitedVertices = self.bfs(v)
-        tmp = sum(visitedVertices)
-        ccClass = np.zeros(self.n, dtype=object)
-        tmp_outClass = []
-        classValue = 1
-        if tmp < self.n: 
-            for el in range(len(visitedVertices)):
-                if el == 0:
-                    tmp_outClass.append(el + 1)
+    def connectedComponents(self):
+        
+        tmp_cc = True
+        cc = 1
+        v = 1
+        self.ccClass = np.zeros(self.n)
+        while tmp_cc:
+            missingVertice = 0
+            tmp_elCC = []
+            tree, visitedVertices = self.bfs(v)
+            for u in range(len(visitedVertices)):
+                if visitedVertices[u] == 1 and self.ccClass[u] == 0:
+                    self.ccClass[u] = cc
+                    tmp_elCC.append(u)
+                elif visitedVertices[u] == 0 and self.ccClass[u] ==  0 and missingVertice == 0:
+                    missingVertice = u
                 else:
-                    ccClass[el] = classValue
-        else:
-            "there is no connected components"
-            return tree
+                    tmp_cc = False
+            v = missingVertice
+            cc+=1
+            self.cc.append(tmp_elCC)
+        return self.ccClass, self.cc
+        
+        
