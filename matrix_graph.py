@@ -128,7 +128,7 @@ class MatrixGraph():
             for u in range(len(visitedVertices)):
                 if visitedVertices[u] == 1 and self.ccClass[u] == 0:
                     self.ccClass[u] = cc
-                    tmp_elCC.append(u)
+                    tmp_elCC.append(u+1)
                 elif visitedVertices[u] == 0 and self.ccClass[u] ==  0:
                     missingVertice = u
                 else:
