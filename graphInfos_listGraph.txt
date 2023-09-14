@@ -1,6 +1,8 @@
-VÃ©rtices: 5
-Arestas: 3
-Grau mÃ­nimo: 1
-Grau mÃ¡ximo: 2
-MÃ©dia dos graus: 1.2
-Mediana gos graus: 1
+Vértices: 8
+Arestas: 11
+Grau mínimo: 1
+Grau máximo: 5
+Média dos graus: 2.75
+Mediana gos graus: 2.5
+Número de componentes conexas: 1
+Tamanho da maior componente conexa: 8

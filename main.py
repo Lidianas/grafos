@@ -21,7 +21,10 @@ class main():
     print(lg.diameter())
 
     print(mg.connectedComponents())
+    print(lg.connectedComponents())
 
+    mg.max_min_cc()
+    lg.max_min_cc()
     mg.graphInfo("graphInfos_matrixGraph.txt")
     lg.graphInfo("graphInfos_listGraph.txt")
 

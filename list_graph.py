@@ -9,6 +9,10 @@ class ListGraph():
         self.n = 0
         self.m = 0
         self.myGraph = 0
+        self.ccClass = []
+        self.cc = []
+        self.max = []
+        self.min = []
 
     def readGraph(self, file):
         with open(file, 'r') as f:
@@ -99,6 +103,10 @@ class ListGraph():
             f.write("Grau máximo: " + str(maxDegree) + '\n')
             f.write("Média dos graus: " + str(meanDegree) + '\n')
             f.write("Mediana gos graus: " + str(medianDegree) + '\n')
+            f.write("Número de componentes conexas: " + str(len(self.cc) - 1) + '\n')
+            f.write("Tamanho da maior componente conexa: " + str(len(self.max)) + '\n')
+            if len(self.min) != 0:
+                f.write("Tamanho da menor componente conexa: " + str(len(self.min)) + '\n')
 
     def dist(self, u, v):
         tree = self.bfs(u)[0]
@@ -130,3 +138,35 @@ class ListGraph():
             biggerDistancePerVertice.append(actual_dist)
 
         return max(biggerDistancePerVertice)
+
+    def connectedComponents(self):
+
+        tmp_cc = True
+        cc = 1
+        v = 1
+        self.ccClass = np.zeros(self.n)
+        missingVertice = 0
+        while tmp_cc:
+
+            tmp_elCC = []
+            tree, visitedVertices = self.bfs(v)
+            for u in range(len(visitedVertices)):
+                if visitedVertices[u] == 1 and self.ccClass[u] == 0:
+                    self.ccClass[u] = cc
+                    tmp_elCC.append(u + 1)
+                elif visitedVertices[u] == 0 and self.ccClass[u] == 0:
+                    missingVertice = u
+                else:
+                    tmp_cc = False
+            v = missingVertice
+            cc += 1
+            self.cc.append(tmp_elCC)
+        return self.ccClass, self.cc
+
+    def max_min_cc(self):
+        for i in self.cc:
+            if len(i) > 0:
+                if len(i) >= len(self.max):
+                    self.max = i
+                if len(i) <= len(self.min):
+                    self.min = i
