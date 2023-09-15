@@ -23,6 +23,10 @@ class main():
     print(mg.connectedComponents())
     print(lg.connectedComponents())
 
+    print(mg.ccDescendingOrder)
+    print(lg.connectedComponents())
+
+
     mg.max_min_cc()
     lg.max_min_cc()
     mg.graphInfo("graphInfos_matrixGraph.txt")

@@ -162,7 +162,7 @@ class ListGraph():
             cc += 1
             self.cc.append(tmp_elCC)
         return self.ccClass, self.cc
-
+ 
     def max_min_cc(self):
         for i in self.cc:
             if len(i) > 0:
@@ -170,3 +170,6 @@ class ListGraph():
                     self.max = i
                 if len(i) <= len(self.min):
                     self.min = i
+    
+    def ccDescendingOrder(self):
+        return sorted(self.cc, key=len, reverse=True)

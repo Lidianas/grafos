@@ -114,7 +114,7 @@ class MatrixGraph():
                     c += 1
             return "there is no path between them \n"
         else:
-            "u and v are equal \n"
+            return "u and v are equal \n"
 
     def diameter(self):
         biggerDistancePerVertice = []
@@ -163,3 +163,7 @@ class MatrixGraph():
                     self.max = i
                 if len(i)<=len(self.min):
                     self.min = i
+
+    def ccDescendingOrder(self):
+        return sorted(self.cc, key=len, reverse=True)
+
