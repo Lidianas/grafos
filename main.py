@@ -7,7 +7,6 @@ class main():
     mg = matrix_graph.MatrixGraph()
     lg = list_graph.ListGraph()
 
-
     mg.readGraph(inputFile)
     lg.readGraph(inputFile)
 
@@ -22,12 +21,6 @@ class main():
     print(mg.connectedComponents())
     print(lg.connectedComponents())
 
-    print(mg.ccDescendingOrder)
-    print(lg.connectedComponents())
-
-
-    mg.max_min_cc()
-    lg.max_min_cc()
     mg.graphInfo("graphInfos_matrixGraph.txt")
     lg.graphInfo("graphInfos_listGraph.txt")
 

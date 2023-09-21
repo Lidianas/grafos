@@ -11,8 +11,6 @@ class ListGraph():
         self.myGraph = 0
         self.ccClass = []
         self.cc = []
-        self.max = []
-        self.min = []
 
     def readGraph(self, file):
         with open(file, 'r') as f:
@@ -104,9 +102,8 @@ class ListGraph():
             f.write("Média dos graus: " + str(meanDegree) + '\n')
             f.write("Mediana gos graus: " + str(medianDegree) + '\n')
             f.write("Número de componentes conexas: " + str(len(self.cc) - 1) + '\n')
-            f.write("Tamanho da maior componente conexa: " + str(len(self.max)) + '\n')
-            if len(self.min) != 0:
-                f.write("Tamanho da menor componente conexa: " + str(len(self.min)) + '\n')
+            f.write("Tamanho da maior componente conexa: " + str(len(self.cc[0])) + '\n')
+            f.write("Tamanho da menor componente conexa: " + str(len(self.cc[-2])) + '\n')
 
     def dist(self, u, v):
         tree = self.bfs(u)[0]
@@ -161,15 +158,7 @@ class ListGraph():
             v = missingVertice
             cc += 1
             self.cc.append(tmp_elCC)
+        
+        self.cc = sorted(self.cc, key=len, reverse=True)
         return self.ccClass, self.cc
  
-    def max_min_cc(self):
-        for i in self.cc:
-            if len(i) > 0:
-                if len(i) >= len(self.max):
-                    self.max = i
-                if len(i) <= len(self.min):
-                    self.min = i
-    
-    def ccDescendingOrder(self):
-        return sorted(self.cc, key=len, reverse=True)
