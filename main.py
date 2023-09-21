@@ -2,8 +2,7 @@ import matrix_graph
 import list_graph
 
 class main():
-    inputFile = "exemplo.txt"
-    outputFile = "graphInfos.txt"
+    inputFile = "grafos/exemplo_1.txt"
 
     mg = matrix_graph.MatrixGraph()
     lg = list_graph.ListGraph()
@@ -22,6 +21,10 @@ class main():
 
     print(mg.connectedComponents())
     print(lg.connectedComponents())
+
+    print(mg.ccDescendingOrder)
+    print(lg.connectedComponents())
+
 
     mg.max_min_cc()
     lg.max_min_cc()

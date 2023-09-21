@@ -32,7 +32,7 @@ class MatrixGraph():
         bfsVector[s - 1] = 1
         bfsQueue.enqueue(s)
         levels = {s: 0}
-        with open("arvore_busca_bfs_matrix.txt", "w") as file:
+        with open("saida/arvore_busca_bfs_matrix.txt", "w") as file:
             file.write(f"Vértice {s}: Pai = {s}, Nível = {0}\n")
             while not bfsQueue.isEmpty():
                 v = bfsQueue.dequeue()
@@ -55,7 +55,7 @@ class MatrixGraph():
         dfsStack.push(s)
         prev = s
         levels = {}
-        with open("arvore_busca_dfs_matrix.txt", "w") as file:
+        with open("saida/arvore_busca_dfs_matrix.txt", "w") as file:
             while not dfsStack.isEmpty():
                 v = dfsStack.pop()
                 if dfsVector[v - 1] == 0:
@@ -89,7 +89,7 @@ class MatrixGraph():
             middle2 = arrDegreeOrdered[int(len(arrDegreeOrdered) // 2 - 1)]
             medianDegree = (middle1 + middle2) / 2
 
-        with open(file, 'w') as f:
+        with open("saida/" + file, 'w') as f:
             f.write("Vértices: " + str(self.n) + '\n')
             f.write("Arestas: " + str(self.m) + '\n')
             f.write("Grau mínimo: " + str(minDegree) + '\n')
@@ -114,7 +114,7 @@ class MatrixGraph():
                     c += 1
             return "there is no path between them \n"
         else:
-            "u and v are equal \n"
+            return "u and v are equal \n"
 
     def diameter(self):
         biggerDistancePerVertice = []
@@ -163,3 +163,7 @@ class MatrixGraph():
                     self.max = i
                 if len(i)<=len(self.min):
                     self.min = i
+
+    def ccDescendingOrder(self):
+        return sorted(self.cc, key=len, reverse=True)
+
