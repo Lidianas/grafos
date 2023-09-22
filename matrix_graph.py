@@ -17,6 +17,7 @@ class MatrixGraph():
         with open(file, 'r') as f:
             self.n = int(f.readline())
             self.myGraph = np.zeros((self.n, self.n), dtype=int)
+            self.ccClass = np.zeros(self.n)
             for linha in f:
                 self.m += 1
                 i, j = map(int, linha.split())
@@ -96,7 +97,7 @@ class MatrixGraph():
             f.write("Mediana gos graus: " + str(medianDegree) + '\n')
             f.write("Número de componentes conexas: " + str(len(self.cc) - 1) + '\n')
             f.write("Tamanho da maior componente conexa: " + str(len(self.cc[0])) + '\n')
-            f.write("Tamanho da menor componente conexa: " + str(len(self.cc[-2])) + '\n')
+            f.write("Tamanho da menor componente conexa: " + str(len(self.cc[-1])) + '\n')
 
     def dist(self, u, v):
         tree = self.bfs(u)[0]
@@ -111,7 +112,7 @@ class MatrixGraph():
                     c += 1
             return "there is no path between them \n"
         else:
-            return "u and v are equal \n"
+            return "they do not belong to the same component \n"
 
     def diameter(self):
         biggerDistancePerVertice = []
@@ -134,19 +135,55 @@ class MatrixGraph():
         tmp_cc = True
         cc = 1
         v = 1
-        self.ccClass = np.zeros(self.n)
         missingVertice = 0
+        
         while tmp_cc:
 
             tmp_elCC = []
             tree, visitedVertices = self.bfs(v)
+            first = True
             for u in range(len(visitedVertices)):
                 if visitedVertices[u] == 1 and self.ccClass[u] == 0:
                     self.ccClass[u] = cc
                     tmp_elCC.append(u + 1)
-                elif visitedVertices[u] == 0 and self.ccClass[u] == 0:
-                    missingVertice = u
-                else:
+                elif visitedVertices[u] == 0 and self.ccClass[u] == 0 and first:
+                    missingVertice = u + 1
+                    first = False
+                elif u==self.n-1 and first:
+                    tmp_cc = False
+            v = missingVertice
+            cc += 1
+            self.cc.append(tmp_elCC)
+
+        self.cc = sorted(self.cc, key=len, reverse=True)
+        return self.ccClass, self.cc
+
+    def connectedComponents1(self):
+
+        tmp_cc = True
+        cc = 1
+        v = 1
+        missingVertice = 0
+        first = True
+        visitedVertices = np.zeros(self.n)
+        while tmp_cc:
+
+            tmp_elCC = []
+            tree, visitedVerticesPerV = self.bfs(v)
+            for vv in range(len(visitedVertices)):
+                if visitedVerticesPerV[vv] == 1 and visitedVertices[vv] == 0:
+                    visitedVertices[vv] = 1
+                    
+            first = True 
+            for u in range(len(visitedVerticesPerV)):
+                if visitedVerticesPerV[u] == 1:
+                    self.ccClass[u] = cc
+                    tmp_elCC.append(u + 1)
+                elif visitedVertices[u] == 0 and first:
+                    print("entrei")
+                    missingVertice = u + 1
+                    first = False
+                elif sum(visitedVertices) == self.n:
                     tmp_cc = False
             v = missingVertice
             cc += 1

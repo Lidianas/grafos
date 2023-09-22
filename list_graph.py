@@ -16,6 +16,7 @@ class ListGraph():
         with open(file, 'r') as f:
             self.n = int(f.readline())
             self.myGraph = np.empty(self.n, dtype=object)
+            self.ccClass = np.zeros(self.n)
             for i in range(self.n):
                 self.myGraph[i] = linked_list.LinkedList()
             for linha in f:
@@ -118,13 +119,12 @@ class ListGraph():
                     c+=1
             return "there is no path between them \n"
         else: 
-            return "u and v are equal \n"
+            return "they do not belong to the same component \n"
 
     def diameter(self):
         biggerDistancePerVertice = []
         actual_dist = 0
         tmp_dist = 0
-
         for u in range(1, self.n+1):
             for v in range(1, self.n+1):
                 if u != v: 
@@ -141,7 +141,7 @@ class ListGraph():
         tmp_cc = True
         cc = 1
         v = 1
-        self.ccClass = np.zeros(self.n)
+        
         missingVertice = 0
         while tmp_cc:
 
