@@ -141,24 +141,60 @@ class ListGraph():
         tmp_cc = True
         cc = 1
         v = 1
-        
         missingVertice = 0
+        
         while tmp_cc:
 
             tmp_elCC = []
             tree, visitedVertices = self.bfs(v)
+            first = True
             for u in range(len(visitedVertices)):
                 if visitedVertices[u] == 1 and self.ccClass[u] == 0:
                     self.ccClass[u] = cc
                     tmp_elCC.append(u + 1)
-                elif visitedVertices[u] == 0 and self.ccClass[u] == 0:
-                    missingVertice = u
-                else:
+                elif visitedVertices[u] == 0 and self.ccClass[u] == 0 and first:
+                    missingVertice = u + 1
+                    first = False
+                elif u==self.n-1 and first:
                     tmp_cc = False
             v = missingVertice
             cc += 1
             self.cc.append(tmp_elCC)
-        
+
+        self.cc = sorted(self.cc, key=len, reverse=True)
+        return self.ccClass, self.cc
+
+    def connectedComponents1(self):
+
+        tmp_cc = True
+        cc = 1
+        v = 1
+        missingVertice = 0
+        first = True
+        visitedVertices = np.zeros(self.n)
+        while tmp_cc:
+
+            tmp_elCC = []
+            tree, visitedVerticesPerV = self.bfs(v)
+            for vv in range(len(visitedVertices)):
+                if visitedVerticesPerV[vv] == 1 and visitedVertices[vv] == 0:
+                    visitedVertices[vv] = 1
+                    
+            first = True 
+            for u in range(len(visitedVerticesPerV)):
+                if visitedVerticesPerV[u] == 1:
+                    self.ccClass[u] = cc
+                    tmp_elCC.append(u + 1)
+                elif visitedVertices[u] == 0 and first:
+                    print("entrei")
+                    missingVertice = u + 1
+                    first = False
+                elif sum(visitedVertices) == self.n:
+                    tmp_cc = False
+            v = missingVertice
+            cc += 1
+            self.cc.append(tmp_elCC)
+
         self.cc = sorted(self.cc, key=len, reverse=True)
         return self.ccClass, self.cc
  

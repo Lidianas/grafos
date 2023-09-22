@@ -21,7 +21,7 @@ class main():
     #print(lg.diameter())
 
     print(mg.connectedComponents())
-    #print(lg.connectedComponents())
+    print(lg.connectedComponents())
 
     #mg.graphInfo("graphInfos_matrixGraph.txt")
     #lg.graphInfo("graphInfos_listGraph.txt")
