@@ -121,20 +121,21 @@ class ListGraph():
         else: 
             return "they do not belong to the same component \n"
 
-    def diameter(self):
-        biggerDistancePerVertice = []
-        actual_dist = 0
-        tmp_dist = 0
-        for u in range(1, self.n+1):
-            for v in range(1, self.n+1):
-                if u != v: 
-                    tmp_dist = self.dist(u, v)
-                    if type(tmp_dist) == int:
-                        if tmp_dist > actual_dist: 
-                            actual_dist = tmp_dist
-            biggerDistancePerVertice.append(actual_dist)
+    def approxDiameter(self):
+        maxCC = []
+        if len(self.cc) == 0:
+            cc = self.connectedComponents()[1]
+            maxCC = cc[0]
+        else:
+            maxCC = self.cc[0]
 
-        return max(biggerDistancePerVertice)
+        firstbfs = self.bfs(maxCC[0])[2]
+        print(maxCC[0])
+        print(firstbfs)
+        secbfs = self.bfs(firstbfs)[2]
+        print(secbfs)
+        d = self.dist(firstbfs, secbfs)
+        return d
 
     def connectedComponents(self):
 

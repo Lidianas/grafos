@@ -1,2 +1,4 @@
-Vértice 6: Pai = 6, Nível = 0
-Vértice 7: Pai = 6, Nível = 1
+Vértice 3: Pai = 3, Nível = 0
+Vértice 5: Pai = 3, Nível = 1
+Vértice 8: Pai = 3, Nível = 1
+Vértice 1: Pai = 5, Nível = 2

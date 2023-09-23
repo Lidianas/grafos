@@ -15,13 +15,13 @@ class main():
     #lg.dfs(4)
     #lg.bfs(4)
 
-    print(mg.dist(1,6))
+    #print(mg.dist(1,6))
 
-    #print(mg.diameter())
+    print(mg.approxDiameter())
     #print(lg.diameter())
 
-    print(mg.connectedComponents())
-    print(lg.connectedComponents())
+    #print(mg.connectedComponents())
+    #print(lg.connectedComponents())
 
     #mg.graphInfo("graphInfos_matrixGraph.txt")
     #lg.graphInfo("graphInfos_listGraph.txt")
