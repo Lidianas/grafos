@@ -123,10 +123,9 @@ class MatrixGraph():
         else:
             maxCC = self.cc[0]
 
-        firstbfs = self.bfs(maxCC[0])[2]
-        print(maxCC[0])
+        a, b, firstbfs = self.bfs(maxCC[0])
         print(firstbfs)
-        secbfs = self.bfs(firstbfs)[2]
+        c, d, secbfs = self.bfs(firstbfs)
         print(secbfs)
         d = self.dist(firstbfs, secbfs)
         return d
