@@ -18,7 +18,7 @@ class main():
     #print(mg.dist(1,6))
 
     print(mg.approxDiameter())
-    #print(lg.diameter())
+    print(lg.approxDiameter())
 
     #print(mg.connectedComponents())
     #print(lg.connectedComponents())

@@ -45,7 +45,7 @@ class ListGraph():
                         file.write(f"Vértice {neighbor.data}: Pai = {v}, Nível = {levels[neighbor.data]}\n")
                         bfsQueue.enqueue(neighbor.data)
                     neighbor = neighbor.next
-        return bfsTree, bfsVector
+        return bfsTree, bfsVector, v
 
     def dfs(self, s):
         dfsVector = np.zeros(self.n, dtype=object)
@@ -147,7 +147,7 @@ class ListGraph():
         while tmp_cc:
 
             tmp_elCC = []
-            tree, visitedVertices = self.bfs(v)
+            tree, visitedVertices, lastv = self.bfs(v)
             first = True
             for u in range(len(visitedVertices)):
                 if visitedVertices[u] == 1 and self.ccClass[u] == 0:
