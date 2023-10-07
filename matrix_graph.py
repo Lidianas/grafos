@@ -123,12 +123,19 @@ class MatrixGraph():
         else:
             maxCC = self.cc[0]
 
-        a, b, firstbfs = self.bfs(maxCC[0])
-        print(firstbfs)
-        c, d, secbfs = self.bfs(firstbfs)
-        print(secbfs)
+        firstbfs = self.bfs(maxCC[0])[2]
+        secbfs = self.bfs(firstbfs)[2]
         d = self.dist(firstbfs, secbfs)
         return d
+    
+    def diameter(self):
+        maxDiam = 0
+        for v in self.myGraph:
+            for u in self.myGraph:
+                tmp_maxDiameter = self.dist(v,u)
+                if maxDiam > tmp_maxDiameter:
+                    maxDiam = tmp_maxDiameter
+        return maxDiam
 
     def connectedComponents(self):
 

@@ -130,12 +130,18 @@ class ListGraph():
             maxCC = self.cc[0]
 
         firstbfs = self.bfs(maxCC[0])[2]
-        print(maxCC[0])
-        print(firstbfs)
         secbfs = self.bfs(firstbfs)[2]
-        print(secbfs)
         d = self.dist(firstbfs, secbfs)
         return d
+    
+    def diameter(self):
+        maxDiam = 0
+        for v in self.myGraph:
+            for u in self.myGraph:
+                tmp_maxDiameter = self.dist(v,u)
+                if maxDiam > tmp_maxDiameter:
+                    maxDiam = tmp_maxDiameter
+        return maxDiam
 
     def connectedComponents(self):
 

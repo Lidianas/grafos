@@ -4,16 +4,16 @@ import matrix_graph
 import list_graph
 
 class main():
-    inputFile = "grafos/grafo_1.txt"
+    inputFile = "grafos/grafo_2.txt"
 
-    mg = matrix_graph.MatrixGraph()
+    #mg = matrix_graph.MatrixGraph()
     lg = list_graph.ListGraph()
 
     #Estudo de caso 1
-    mg.readGraph(inputFile)
+    #mg.readGraph(inputFile)
     lg.readGraph(inputFile)
 
-    #Estudo de caso 2
+    """#Estudo de caso 2
     times = []
     for i in range(100):
         inicial = time.time()
@@ -45,11 +45,15 @@ class main():
     print(lg.dist(10,30))
     print(lg.dist(20,30))
 
-    #Estudo de caso 6
-    print(lg.connectedComponents())
-
+    #Estudo de caso 6"""
+    #a = lg.connectedComponents()[1][-1]
+    #b = len(lg.connectedComponents()[1])
+    #print(a,b)
+    
     #Estudo de caso 7
-    print(lg.approxDiameter())
+    #print(mg.approxDiameter())
+    md = lg.diameter()
+    print(md)
 
 
 
