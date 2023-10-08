@@ -1,0 +1,8 @@
+Vértice 1: Pai = 1, Nível = 0
+Vértice 4: Pai = 1, Nível = 1
+Vértice 7: Pai = 1, Nível = 1
+Vértice 6: Pai = 1, Nível = 1
+Vértice 5: Pai = 1, Nível = 1
+Vértice 3: Pai = 1, Nível = 1
+Vértice 8: Pai = 1, Nível = 1
+Vértice 2: Pai = 1, Nível = 1

@@ -3,3 +3,9 @@ grafos/grafo_2.txt
 grafos/grafo_3.txt
 grafos/grafo_4.txt
 grafos/grafo_5.txt
+grafos/tmp_bfs.txt
+grafos/mg_gi_output_test_file.txt
+grafos/mg_dfs_output_test_file.txt
+grafos/mg_bfs_output_test_file.txt
+grafos/lg_gi_output_test_file.txt
+grafos/lg_dfs_output_test_file.txt

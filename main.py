@@ -7,53 +7,33 @@ class main():
     inputFile = "grafos/exemplo_1.txt"
 
     mg = matrix_graph.MatrixGraph()
-    #lg = list_graph.ListGraph()
+    lg = list_graph.ListGraph()
 
-    #Estudo de caso 1
     mg.readGraph(inputFile)
-    #lg.readGraph(inputFile)
+    lg.readGraph(inputFile)
 
-    #Estudo de caso 2
-    """times = []
-    for i in range(100):
-        inicial = time.time()
-        lg.bfs(i + 1)
-        final = time.time()
-        times.append(final - inicial)
-    print(sum(times) / len(times))"""
+    mg.bfs(1, "grafos/mg_bfs_output_test_file.txt")
+    lg.bfs(1, "grafos/mg_bfs_output_test_file.txt")
 
-    #Estudo de caso 3
-    """times = []
-    for i in range(100):
-        inicial = time.time()
-        lg.dfs(i+1)
-        final = time.time()
-        times.append(final-inicial)
-    print(sum(times)/len(times))"""
+    mg.dfs(1, "grafos/mg_dfs_output_test_file.txt")
+    lg.dfs(1, "grafos/lg_dfs_output_test_file.txt")
 
-    #Estudo de caso 4 - Os respectivos pais foram encontrados no arquivo de output com a arvore gerado pelas buscas
-    a = mg.bfs(1, "test.txt")
-    print(a)
-    """lg.bfs(2)
-    lg.bfs(3)
+    mg.dist(1,4)
+    lg.dist(1,4)
 
-    lg.dfs(1)
-    lg.dfs(2)
-    lg.dfs(3)"""
+    mg.approxDiameter()
+    lg.approxDiameter()
 
-    #Estudo de caso 5
-    #print(lg.dist(10,20))
-    #print(lg.dist(10,30))
-    #print(lg.dist(20,30))
+    mg.connectedComponents()
+    lg.connectedComponents()
 
-    #Estudo de caso 6"""
-    #a = lg.connectedComponents()[1][-1]
-    #b = len(lg.connectedComponents()[1])
-    #print(a,b)
-    
-    #Estudo de caso 7
-    #print(mg.approxDiameter())
-    #md = lg.diameter()
+    mg.graphInfo("grafos/mg_gi_output_test_file.txt")
+    lg.graphInfo("grafos/lg_gi_output_test_file.txt")
+
+
+
+
+
 
 
 
