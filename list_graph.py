@@ -2,72 +2,62 @@ import numpy as np
 import linked_list
 import queue_implementation
 import stack
+from graph import Graph
 
-class ListGraph():
+class ListGraph(Graph):
 
     def __init__(self):
-        self.n = 0
-        self.m = 0
-        self.myGraph = 0
-        self.ccClass = []
-        self.cc = []
+        super().__init__()
 
     def readGraph(self, file):
         with open(file, 'r') as f:
             self.n = int(f.readline())
-            self.myGraph = np.empty(self.n, dtype=object)
+            self.graph = np.empty(self.n, dtype=object)
             self.ccClass = np.zeros(self.n)
             for i in range(self.n):
-                self.myGraph[i] = linked_list.LinkedList()
+                self.graph[i] = linked_list.LinkedList()
             for linha in f:
                 self.m += 1
                 i, j = map(int, linha.split())
-                self.myGraph[i - 1].append(j)
-                self.myGraph[j - 1].append(i)
+                self.graph[i - 1].append(j)
+                self.graph[j - 1].append(i)
 
-    def bfs(self, s):
-        bfsVector = np.zeros(self.n, dtype=object)
-        bfsTree = np.zeros(self.n, dtype=object)
-        bfsQueue = queue_implementation.Queue()
-        bfsVector[s - 1] = 1
-        bfsQueue.enqueue(s)
-        levels = {s: 0}
-        with open("saida/arvore_busca_bfs_list.txt", "w") as file:
+    def bfs(self, s, output_file_dir):
+
+        super().bfs(s)
+        with open(output_file_dir, "w") as file:
             file.write(f"Vértice {s}: Pai = {s}, Nível = {0}\n")
-            while not bfsQueue.isEmpty():
-                v = bfsQueue.dequeue()
-                neighbor = self.myGraph[v - 1].head
+            while not self.bfsQueue.isEmpty():
+                v = self.bfsQueue.dequeue()
+                neighbor = self.graph[v - 1].head
                 while neighbor is not None:
-                    if bfsVector[neighbor.data - 1] == 0:
-                        bfsVector[neighbor.data - 1] = 1
-                        bfsTree[neighbor.data - 1] = v
-                        levels[neighbor.data] = levels[v] + 1 if v in levels else 0
-                        file.write(f"Vértice {neighbor.data}: Pai = {v}, Nível = {levels[neighbor.data]}\n")
-                        bfsQueue.enqueue(neighbor.data)
+                    if self.bfsVector[neighbor.data - 1] == 0:
+                        self.bfsVector[neighbor.data - 1] = 1
+                        self.bfsTree[neighbor.data - 1] = v
+                        self.levels[neighbor.data] = self.levels[v] + 1 if v in self.levels else 0
+                        file.write(f"Vértice {neighbor.data}: Pai = {v}, Nível = {self.levels[neighbor.data]}\n")
+                        self.bfsQueue.enqueue(neighbor.data)
                     neighbor = neighbor.next
-        return bfsTree, bfsVector, v
+        return self.bfsTree, self.bfsVector, v
 
-    def dfs(self, s):
-        dfsVector = np.zeros(self.n, dtype=object)
-        dfsStack = stack.Stack()
-        dfsStack.push(s)
-        prev = s
-        levels = {}
-        with open("saida/arvore_busca_dfs_list.txt", "w") as file:
-            while not dfsStack.isEmpty():
-                v = dfsStack.pop()
-                if dfsVector[v - 1] == 0:
-                    dfsVector[v - 1] = 1
-                    levels[v] = levels[prev] + 1 if prev in levels else 0
-                    file.write(f"Vértice {v}: Pai = {prev}, Nível = {levels[v]}\n")
-                    neighbor = self.myGraph[v - 1].head
+    def dfs(self, s, output_file_dir):
+
+        super().dfs(s)
+        with open(output_file_dir, "w") as file:
+            while not self.dfsStack.isEmpty():
+                v = self.dfsStack.pop()
+                if self.dfsVector[v - 1] == 0:
+                    self.dfsVector[v - 1] = 1
+                    self.levels[v] = self.levels[prev] + 1 if prev in self.levels else 0
+                    file.write(f"Vértice {v}: Pai = {prev}, Nível = {self.levels[v]}\n")
+                    neighbor = self.graph[v - 1].head
                     while neighbor is not None:
-                        dfsStack.push(neighbor.data)
+                        self.dfsStack.push(neighbor.data)
                         neighbor = neighbor.next
                 prev = v
 
     def getIncidenceByVertice(self, v):
-        neighbor = self.myGraph[v].head
+        neighbor = self.graph[v].head
         arrIncidence = []
         while neighbor is not None:
             arrIncidence.append(neighbor.next)
@@ -78,8 +68,8 @@ class ListGraph():
     def graphInfo(self, file):
 
         arrDegree = []
-        if len(self.myGraph) != 0:
-            for incident in range(len(self.myGraph)):
+        if len(self.graph) != 0:
+            for incident in range(len(self.graph)):
                 tmp_incidents = self.getIncidenceByVertice(incident)
                 arrDegree.append(len(tmp_incidents))
 
@@ -133,15 +123,6 @@ class ListGraph():
         secbfs = self.bfs(firstbfs)[2]
         d = self.dist(firstbfs, secbfs)
         return d
-    
-    def diameter(self):
-        maxDiam = 0
-        for v in self.myGraph:
-            for u in self.myGraph:
-                tmp_maxDiameter = self.dist(v,u)
-                if maxDiam > tmp_maxDiameter:
-                    maxDiam = tmp_maxDiameter
-        return maxDiam
 
     def connectedComponents(self):
 
