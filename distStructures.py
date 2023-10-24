@@ -13,7 +13,7 @@ class distVector:
             if self.distV[i] < currMinDist and self.visited[i] == 0:
                 currMinVertex = i + 1
                 currMinDist = self.distV[i]
-        self.visited[currMinVertex-1] = 1
+        self.visited[currMinVertex - 1] = 1
         return currMinVertex
 
     def checkDist(self, v):
@@ -24,97 +24,98 @@ class distVector:
 
 
 class heapNode:
-    def __init__(self, v, dist):
+    def __init__(self, v, d):
         self.v = v
-        self.dist = dist
-        self.left = None
-        self.right = None
-        self.parent = None
+        self.dist = d
+
+
+def leftVertexIndex(index):
+    return int(2 * index + 1)
+
+
+def parentIndex(index):
+    return int((index - 1) / 2)
+
+
+def rightVertexIndex(index):
+    return int(2 * (index + 1))
 
 
 class distHeap:
     def __init__(self, n):
-        self.root = heapNode(1, float("inf"))
         self.n = n
-        self.mappingVector = np.zeros(self.n, dtype=object)
-        self.mappingVector[0] = self.root
-        self.dist = np.full(n, np.inf)
-        for i in range(2, self.n + 1):
+        self.heap = np.empty(self.n, dtype=object)
+        self.mappingVector = np.full(self.n, -1)
+        self.distVector = np.full(self.n, float("inf"))
+        self.tail = -1
+        for i in range(1, self.n):
             self.insert(i, float("inf"))
 
-    def insert(self, v, dist):
-        lastRight = self.root
-        while lastRight.right is not None:
-            lastRight = lastRight.right
-        lastRight.right = heapNode(v, dist)
-        lastRight.right.parent = lastRight
-        self.mappingVector[v - 1] = lastRight.right
-        self.rebalance(lastRight.right)
+    def insert(self, v, d):
+        newNode = heapNode(v, d)
+        self.tail += 1
+        self.heap[self.tail] = newNode
+
+        i = self.tail
+        while i > 0 and self.heap[parentIndex(i)].dist > self.heap[i].dist:
+            aux = self.heap[i]
+            pai = self.heap[parentIndex(i)].v
+            self.heap[i] = self.heap[parentIndex(i)]
+            self.heap[parentIndex(i)] = aux
+            self.mappingVector[v] = parentIndex(i)
+            self.mappingVector[pai] = i
+            i = parentIndex(i)
 
     def getMinDist(self):
-        root = self.root.v
-        lastRight = self.root
-        while lastRight.right is not None:
-            lastRight = lastRight.right
-        self.root.v = lastRight.v
-        self.root.dist = lastRight.dist
-        if lastRight.parent:
-            lastRight.parent.right = None
-        self.rebalance(self.root)
-        return root
+        minVertex = self.heap[0].v
+        self.heap[0] = self.heap[self.tail]
+        self.tail -= 1
+        self.rebalance(0)
+        return minVertex
 
-    def rebalance(self, startNode):
-        def swap_nodes(node1, node2):
-            node1.v, node2.v = node2.v, node1.v
-            node1.dist, node2.dist = node2.dist, node1.dist
+    def rebalance(self, index):
+        if not self.isLeaf(index):
+            if (self.getDist(self.heap[index]) > self.getDist(self.heap[leftVertexIndex(index)]) or
+                    self.getDist(self.heap[index]) > self.getDist(self.heap[rightVertexIndex(index)])):
 
-        node = startNode
+                if self.getDist(self.heap[leftVertexIndex(index)]) < self.getDist(self.heap[rightVertexIndex(index)]):
+                    self.swap(index, leftVertexIndex(index))
+                    self.rebalance(leftVertexIndex(index))
 
-        while node.parent is not None:
-            parent = node.parent
-            if node.dist < parent.dist:
-                swap_nodes(node, parent)
-            else:
-                break
+                else:
+                    self.swap(index, rightVertexIndex(index))
+                    self.rebalance(rightVertexIndex(index))
 
-            node = parent
+    def getDist(self, p):
+        if isinstance(p, heapNode):
+            return p.dist
+        else:
+            return float("inf")
 
-        while node.left is not None:
-            left_child = node.left
-            right_child = node.right
-            min_child = left_child
+    def isLeaf(self, index):
+        return parentIndex(self.tail) < index <= self.tail
 
-            if right_child is not None and right_child.dist < left_child.dist:
-                min_child = right_child
+    def isValid(self, index):
+        return index < self.tail
 
-            if node.dist > min_child.dist:
-                swap_nodes(node, min_child)
-                node = min_child
-            else:
-                break
+    def swap(self, heapIndex1, heapIndex2):
+        if isinstance(self.heap[heapIndex1], heapNode) and self.isValid(heapIndex1):
+            vertex1 = self.heap[heapIndex1].v
+            self.mappingVector[vertex1 - 1] = heapIndex2
 
-    def updateDist(self, v, newDist):
-        self.mappingVector[v - 1].dist = newDist
-        self.rebalance(self.mappingVector[v - 1])
-        self.dist[v-1] = newDist
-    def checkDist(self, v):
-        print(v)
-        print(self.mappingVector[v-1].v)
-        print(self.mappingVector[v-1].dist)
-        print(self.dist[v-1])
-        print("lol")
-        return self.dist[v - 1]
+        if isinstance(self.heap[heapIndex2], heapNode) and self.isValid(heapIndex2):
+            vertex2 = self.heap[heapIndex2].v
+            self.mappingVector[vertex2 - 1] = heapIndex1
 
-    def printHeap(self):
-        # Helper function for in-order traversal and printing
-        def in_order_traversal(node):
-            if node is not None:
-                # Recursively visit left subtree
-                in_order_traversal(node.left)
-                # Print the current node
-                print(f"Value: {node.v}, Distance: {node.dist}")
-                # Recursively visit right subtree
-                in_order_traversal(node.right)
+        aux = self.heap[heapIndex1]
+        self.heap[heapIndex1] = self.heap[heapIndex2]
+        self.heap[heapIndex2] = aux
 
-        print("Heap Elements (Ordered by Distance):")
-        in_order_traversal(self.root)
+    def checkDist(self, vertex):
+        return self.distVector[vertex - 1]
+
+    def updateDist(self, vertex, newDist):
+        self.distVector[vertex - 1] = newDist
+        heapIndex = int(self.mappingVector[vertex - 1])
+        if isinstance(self.heap[heapIndex], heapNode) and self.isValid(heapIndex):
+            self.heap[heapIndex].dist = newDist

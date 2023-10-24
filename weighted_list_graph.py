@@ -55,7 +55,6 @@ class WeightedListGraph:
                         self.path_s[viz - 1].extend(self.path_s[u-1])
                     self.path_s[viz - 1].append(u)
                 neighbor = neighbor.next
-        print(self.dist_s.checkDist(2))
         return self.dist_s, self.path_s
 
     def minDistPath(self, s):
