@@ -4,22 +4,23 @@ import numpy as np
 class distVector:
     def __init__(self, n):
         self.distV = np.full(n, np.inf)
-        self.distAux = np.full(n, np.inf)
+        self.visited = np.zeros(n)
 
     def getMinDist(self):
-        currMin = float('inf')
-        for i in range(len(self.distAux)):
-            if self.distAux[i] < currMin:
-                currMin = i
-        self.distAux[currMin] = float('inf')
-        return currMin+1
+        currMinDist = float('inf')
+        currMinVertex = -1
+        for i in range(len(self.distV)):
+            if self.distV[i] < currMinDist and self.visited[i] == 0:
+                currMinVertex = i + 1
+                currMinDist = self.distV[i]
+        self.visited[currMinVertex-1] = 1
+        return currMinVertex
 
     def checkDist(self, v):
         return self.distV[v - 1]
 
     def updateDist(self, v, val):
         self.distV[v - 1] = val
-        self.distAux[v - 1] = val
 
 
 class heapNode:
@@ -35,15 +36,19 @@ class distHeap:
     def __init__(self, n):
         self.root = heapNode(1, float("inf"))
         self.n = n
+        self.mappingVector = np.zeros(self.n, dtype=object)
+        self.mappingVector[0] = self.root
+        self.dist = np.full(n, np.inf)
         for i in range(2, self.n + 1):
             self.insert(i, float("inf"))
-        self.dist = distVector(self.n)
+
     def insert(self, v, dist):
         lastRight = self.root
         while lastRight.right is not None:
             lastRight = lastRight.right
         lastRight.right = heapNode(v, dist)
         lastRight.right.parent = lastRight
+        self.mappingVector[v - 1] = lastRight.right
         self.rebalance(lastRight.right)
 
     def getMinDist(self):
@@ -89,21 +94,16 @@ class distHeap:
                 break
 
     def updateDist(self, v, newDist):
-        def find_and_update(node, value, new_dist):
-            if node is None:
-                return
-            if node.v == value:
-                node.dist = new_dist
-                self.rebalance(node)  # Rebalance the heap after updating the distance
-                return
-            find_and_update(node.left, value, new_dist)
-            find_and_update(node.right, value, new_dist)
-
-        find_and_update(self.root, v, newDist)
-        self.dist.updateDist(v, newDist)
-
+        self.mappingVector[v - 1].dist = newDist
+        self.rebalance(self.mappingVector[v - 1])
+        self.dist[v-1] = newDist
     def checkDist(self, v):
-        return self.dist.checkDist(v)
+        print(v)
+        print(self.mappingVector[v-1].v)
+        print(self.mappingVector[v-1].dist)
+        print(self.dist[v-1])
+        print("lol")
+        return self.dist[v - 1]
 
     def printHeap(self):
         # Helper function for in-order traversal and printing
