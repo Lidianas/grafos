@@ -48,14 +48,14 @@ class distHeap:
         self.mappingVector = np.full(self.n, -1)
         self.distVector = np.full(self.n, float("inf"))
         self.tail = -1
-        for i in range(1, self.n):
+        for i in range(1, self.n+1):
             self.insert(i, float("inf"))
 
     def insert(self, v, d):
         newNode = heapNode(v, d)
         self.tail += 1
         self.heap[self.tail] = newNode
-
+        self.mappingVector[v-1] = self.tail
         i = self.tail
         while i > 0 and self.heap[parentIndex(i)].dist > self.heap[i].dist:
             aux = self.heap[i]
@@ -69,12 +69,13 @@ class distHeap:
     def getMinDist(self):
         minVertex = self.heap[0].v
         self.heap[0] = self.heap[self.tail]
+        self.mappingVector[self.heap[0].v - 1] = 0
         self.tail -= 1
         self.rebalance(0)
         return minVertex
 
     def rebalance(self, index):
-        if not self.isLeaf(index):
+        if not self.isLeaf(index) and self.isValid(index):
             if (self.getDist(self.heap[index]) > self.getDist(self.heap[leftVertexIndex(index)]) or
                     self.getDist(self.heap[index]) > self.getDist(self.heap[rightVertexIndex(index)])):
 
@@ -113,9 +114,17 @@ class distHeap:
 
     def checkDist(self, vertex):
         return self.distVector[vertex - 1]
-
     def updateDist(self, vertex, newDist):
-        self.distVector[vertex - 1] = newDist
-        heapIndex = int(self.mappingVector[vertex - 1])
-        if isinstance(self.heap[heapIndex], heapNode) and self.isValid(heapIndex):
+        heapIndex = self.mappingVector[vertex - 1]
+        if heapIndex != -1:
+            # Atualize a distância do vértice
+            self.distVector[vertex - 1] = newDist
             self.heap[heapIndex].dist = newDist
+
+            # Verifique se é necessário fazer ajustes na heap
+            parent = parentIndex(heapIndex)
+            while heapIndex > 0 and self.heap[heapIndex].dist < self.heap[parent].dist:
+                # Faça uma troca com o pai
+                self.swap(heapIndex, parent)
+                heapIndex = parent
+                parent = parentIndex(heapIndex)
