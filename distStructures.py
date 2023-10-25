@@ -1,5 +1,5 @@
 import numpy as np
-
+import heapq
 
 class distVector:
     def __init__(self, n):
@@ -22,8 +22,24 @@ class distVector:
     def updateDist(self, v, val):
         self.distV[v - 1] = val
 
+class distHeap():
+    def __init__(self, n):
+        self.distV = []
+        for node in range(len(n)):
+            heapq.heappush(self.distV, (np.inf, node+1))
+    
+    def updateDist(self, v, val):
+        pass
 
-class heapNode:
+    def getMinDist(self):
+        return heapq.heappop(self.distV)
+    
+    def checkDist(self, v):
+        
+    
+
+
+"""class heapNode:
     def __init__(self, v, d):
         self.v = v
         self.dist = d
@@ -38,10 +54,11 @@ def parentIndex(index):
 
 
 def rightVertexIndex(index):
-    return int(2 * (index + 1))
+    return int(2 * (index + 1))"""
 
 
-class distHeap:
+
+"""class distHeap:
     def __init__(self, n):
         self.n = n
         self.heap = np.empty(self.n, dtype=object)
@@ -118,4 +135,4 @@ class distHeap:
         self.distVector[vertex - 1] = newDist
         heapIndex = int(self.mappingVector[vertex - 1])
         if isinstance(self.heap[heapIndex], heapNode) and self.isValid(heapIndex):
-            self.heap[heapIndex].dist = newDist
+            self.heap[heapIndex].dist = newDist"""
