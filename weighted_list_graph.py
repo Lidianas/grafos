@@ -8,7 +8,7 @@ from distStructures import distHeap, distVector
 
 class WeightedListGraph:
 
-    def __init__(self, id):
+    def __init__(self, id, oriented):
         self.n = 0
         self.m = 0
         self.graph = 0
@@ -16,6 +16,7 @@ class WeightedListGraph:
         self.dist_s = 0
         self.path_s = 0
         self.dijType = id
+        self.oriented = oriented
 
     def readGraph(self, file):
         with open(file, 'r') as f:
@@ -31,7 +32,8 @@ class WeightedListGraph:
                 if not self.negativeWeights and w < 0:
                     self.negativeWeights = True
                 self.graph[i - 1].append(j, w)
-                self.graph[j - 1].append(i, w)
+                if not self.oriented:
+                    self.graph[j - 1].append(i, w)
         if self.dijType == 1:
             self.dist_s = distVector(self.n)
         elif self.dijType == 2:
