@@ -11,7 +11,6 @@ class Graph():
         self.connectedComponentsClass = []
         self.arrConnectedComponents = []
         
-
     def bfs(self, s):
         self.bfsVector = np.zeros(self.n, dtype=object)
         self.bfsTree = np.zeros(self.n, dtype=object)
@@ -29,7 +28,6 @@ class Graph():
 
     def graphInfo(self, file):
 
-        
         minDegree = min(self.arrDegree)
         maxDegree = max(self.arrDegree)
         meanDegree = sum(self.arrDegree)/len(self.arrDegree)
