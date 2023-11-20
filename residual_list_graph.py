@@ -22,9 +22,9 @@ class ResidualGraph(ListGraph):
                 if int(originalCapacity) != 0:
                     self.graph[u].append(neighbor.data, originalCapacity, True)
                     self.graph[neighbor.data - 1].append(u + 1, reverseCapacity, False)
-                neighbor = neighbor.next
+                    neighbor = neighbor.next
 
-    def updateResidualGraph(self, input_graph, path, target, b):
+    def updateResidualGraph(self, input_graph):
         
         for i in range(self.n):
             self.graph[i] = ResidualLinkedList()
@@ -38,25 +38,6 @@ class ResidualGraph(ListGraph):
                 if int(reverseCapacity) != 0:
                     self.graph[neighbor.data - 1].append(u + 1, reverseCapacity, False)
                 neighbor = neighbor.next
-
-        # actualOriginal = target
-        # actualReverse = path[-1][0]
-        # for p in range(len(path)-1, 0, -1):
-        #     node = path[p]
-        #     if node[2] == True: # aresta original
-        #         v = self.graph[node[0]-1].head
-        #         while v.data != actualOriginal:
-        #             v.next
-
-        #         self.graph[node[0] - 1] -= b
-        #         actualOriginal = node[0]
-        #     else: # aresta reversa
-        #         v = self.graph[actualReverse].head
-        #         while v.data != node[0]:
-        #             v.next
-
-        #         self.graph[actualReverse - 1] += b
-        #         actualReverse = node[0]
 
 
         

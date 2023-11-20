@@ -78,10 +78,10 @@ class WeightedListGraph(ListGraph):
             if len(path) != 0: 
                 currentBottleneck = bottleneck
                 self.augment(currentBottleneck, path, target)
-                residualGraph.updateResidualGraph(self.graph, path, target, currentBottleneck)
-        print(len(path))       
+                residualGraph.updateResidualGraph(self.graph)
+                
         arrFlowAlloc = self.flowAlloc()
-        v = self.graph[0].head
+        v = self.graph[source-1].head
         while v is not None:
             maxF += v.currentFlow
             v = v.next
@@ -112,22 +112,20 @@ class WeightedListGraph(ListGraph):
         tmp = target
         maxF = 0
         tmp_maxF = 0
-        tmp_v = 0
         for p in path:
             v = self.graph[p[0]-1].head
             while v is not None:
                 if v.data == tmp:
-                    tmp_v = v
                     break
                 else:
                     v = v.next 
             
             if p[2] is True:
-                tmp_v.currentFlow += b
-                tmp_maxF = tmp_v.currentFlow
+                v.currentFlow += b
+                tmp_maxF = v.currentFlow
             else:
-                tmp_v.currentFlow -= b
-                tmp_maxF = tmp_v.currentFlow
+                v.currentFlow = b
+                tmp_maxF = v.currentFlow
             tmp = p[0]
             
             if tmp_maxF > maxF:

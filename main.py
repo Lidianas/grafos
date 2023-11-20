@@ -10,7 +10,7 @@ class main():
     wlg = WeightedListGraph(2, True)
     wlg.readGraph(inputFile)
     maxFlow, flowAllocation = wlg.fordFulkerson(1, 2)
-    #print("Flow allocation: ", flowAllocation)
+    print("Flow allocation: ", flowAllocation)
     print("Max flow: ", maxFlow)
     
 
