@@ -25,36 +25,36 @@ class ListGraph(Graph):
     def bfs(self, s, output_file_dir):
 
         super().bfs(s)
-        with open(output_file_dir, "w") as file:
-            file.write(f"Vértice {s}: Pai = {s}, Nível = {0}\n")
-            while not self.bfsQueue.isEmpty():
-                v = self.bfsQueue.dequeue()
-                neighbor = self.graph[v - 1].head
-                while neighbor is not None:
-                    if self.bfsVector[neighbor.data - 1] == 0:
-                        self.bfsVector[neighbor.data - 1] = 1
-                        self.bfsTree[neighbor.data - 1] = v
-                        self.levels[neighbor.data] = self.levels[v] + 1 if v in self.levels else 0
-                        file.write(f"Vértice {neighbor.data}: Pai = {v}, Nível = {self.levels[neighbor.data]}\n")
-                        self.bfsQueue.enqueue(neighbor.data)
-                    neighbor = neighbor.next
+        #with open(output_file_dir, "w") as file:
+            #file.write(f"Vértice {s}: Pai = {s}, Nível = {0}\n")
+        while not self.bfsQueue.isEmpty():
+            v = self.bfsQueue.dequeue()
+            neighbor = self.graph[v - 1].head
+            while neighbor is not None:
+                if self.bfsVector[neighbor.data - 1] == 0:
+                    self.bfsVector[neighbor.data - 1] = 1
+                    self.bfsTree[neighbor.data - 1] = v
+                    self.levels[neighbor.data] = self.levels[v] + 1 if v in self.levels else 0
+                    #file.write(f"Vértice {neighbor.data}: Pai = {v}, Nível = {self.levels[neighbor.data]}\n")
+                    self.bfsQueue.enqueue(neighbor.data)
+                neighbor = neighbor.next
         return self.bfsTree, self.bfsVector, v
 
     def dfs(self, s, output_file_dir):
 
         super().dfs(s)
-        with open(output_file_dir, "w") as file:
-            while not self.dfsStack.isEmpty():
-                v = self.dfsStack.pop()
-                if self.dfsVector[v - 1] == 0:
-                    self.dfsVector[v - 1] = 1
-                    self.levels[v] = self.levels[self.prev] + 1 if self.prev in self.levels else 0
-                    file.write(f"Vértice {v}: Pai = {self.prev}, Nível = {self.levels[v]}\n")
-                    neighbor = self.graph[v - 1].head
-                    while neighbor is not None:
-                        self.dfsStack.push(neighbor.data)
-                        neighbor = neighbor.next
-                self.prev = v
+        #with open(output_file_dir, "w") as file:
+        while not self.dfsStack.isEmpty():
+            v = self.dfsStack.pop()
+            if self.dfsVector[v - 1] == 0:
+                self.dfsVector[v - 1] = 1
+                self.levels[v] = self.levels[self.prev] + 1 if self.prev in self.levels else 0
+                #file.write(f"Vértice {v}: Pai = {self.prev}, Nível = {self.levels[v]}\n")
+                neighbor = self.graph[v - 1].head
+                while neighbor is not None:
+                    self.dfsStack.push(neighbor.data)
+                    neighbor = neighbor.next
+            self.prev = v
 
     def getIncidenceByVertice(self, v):
         neighbor = self.graph[v].head
